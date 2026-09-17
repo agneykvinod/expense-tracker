@@ -1,5 +1,25 @@
-// In-memory list of expenses. Each entry: { id, description, amount, category }
-let expenses = [];
+// Expenses persist in localStorage under this key. Each entry: { id, description, amount, category }
+const STORAGE_KEY = 'ledger.expenses';
+
+function loadExpenses() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (err) {
+    console.error('Could not read saved expenses:', err);
+    return [];
+  }
+}
+
+function saveExpenses() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses));
+  } catch (err) {
+    console.error('Could not save expenses:', err);
+  }
+}
+
+let expenses = loadExpenses();
 
 const form = document.getElementById('expenseForm');
 const descriptionInput = document.getElementById('description');
@@ -66,6 +86,7 @@ form.addEventListener('submit', (event) => {
 
   form.reset();
   descriptionInput.focus();
+  saveExpenses();
   render();
 });
 
@@ -75,6 +96,7 @@ expenseList.addEventListener('click', (event) => {
 
   const id = Number(button.dataset.id);
   expenses = expenses.filter((e) => e.id !== id);
+  saveExpenses();
   render();
 });
 
@@ -82,6 +104,7 @@ clearBtn.addEventListener('click', () => {
   if (expenses.length === 0) return;
   if (confirm('Clear all expenses?')) {
     expenses = [];
+    saveExpenses();
     render();
   }
 });
