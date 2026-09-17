@@ -1,710 +1,529 @@
-:root {
-  --black: #0a0a0a;
-  --white: #ffffff;
-  --grey-900: #171717;
-  --grey-700: #3a3a3a;
-  --grey-500: #767676;
-  --grey-300: #b4b4b4;
-  --grey-150: #e2e2e2;
-  --grey-100: #ececec;
-  --grey-050: #f6f6f6;
-
-  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', Menlo, Consolas, monospace;
-
-  --radius: 10px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: var(--grey-050);
-  color: var(--black);
-  font-family: var(--sans);
-  -webkit-font-smoothing: antialiased;
-
-  display: flex;
-  justify-content: center;
-
-  padding: 40px 16px 64px;
-}
-
-.app {
-  width: 100%;
-  max-width: 480px;
-}
-
-/* Accessibility */
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* Header */
-
-.app-header {
-  padding: 8px 4px 28px;
-}
-
-.wordmark {
-  margin: 0 0 6px;
-
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-
-  color: var(--grey-500);
-}
-
-.tagline {
-  margin: 0;
-
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.25;
-
-  color: var(--black);
-}
-
-/* Dashboard */
-
-.dashboard {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  gap: 10px;
-  margin-bottom: 28px;
-}
-
-.dash-card {
-  grid-column: span 1;
-
-  background: var(--white);
-  border: 1px solid var(--grey-150);
-  border-radius: var(--radius);
-
-  padding: 16px 18px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.dash-card--primary {
-  grid-column: 1 / -1;
-
-  background: var(--black);
-  border-color: var(--black);
-}
-
-.dash-card--primary .dash-label {
-  color: var(--grey-300);
-}
-
-.dash-card--primary .dash-value {
-  color: var(--white);
-  font-size: 2rem;
-}
-
-.dash-label {
-  font-size: 0.72rem;
-  color: var(--grey-500);
-}
-
-.dash-value {
-  font-family: var(--mono);
-  font-variant-numeric: tabular-nums;
-
-  font-size: 1.3rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-/* Sections */
-
-.section-heading {
-  margin: 0 0 14px;
-
-  font-size: 0.95rem;
-  font-weight: 600;
-
-  color: var(--black);
-}
-
-.entry,
-.ledger,
-.analytics {
-  background: var(--white);
-  border: 1px solid var(--grey-150);
-  border-radius: var(--radius);
-
-  padding: 20px 18px;
-  margin-bottom: 14px;
-}
-
-/* Entry form */
-
-.entry-form {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-label {
-  font-size: 0.78rem;
-  color: var(--grey-500);
-}
-
-.optional {
-  color: var(--grey-300);
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-
-  font-family: var(--sans);
-  font-size: 0.95rem;
-
-  padding: 11px 12px;
-
-  border: 1px solid var(--grey-150);
-  border-radius: 8px;
-
-  background: var(--grey-050);
-  color: var(--black);
-
-  transition:
-    border-color 0.15s ease,
-    background 0.15s ease;
-}
-
-textarea {
-  resize: vertical;
-  min-height: 76px;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: var(--grey-300);
-}
-
-.amount-input {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-}
-
-.currency-prefix {
-  position: absolute;
-
-  left: 12px;
-
-  color: var(--grey-500);
-
-  font-family: var(--mono);
-  font-size: 0.95rem;
-
-  pointer-events: none;
-}
-
-.amount-input input {
-  padding-left: 28px;
-
-  font-family: var(--mono);
-  font-variant-numeric: tabular-nums;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-
-  border-color: var(--black);
-  background: var(--white);
-}
-
-button:focus-visible {
-  outline: 2px solid var(--black);
-  outline-offset: 2px;
-}
-
-/* Form buttons */
-
-.form-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  margin-top: 4px;
-}
-
-.add-btn {
-  width: 100%;
-
-  padding: 13px;
-
-  border: none;
-  border-radius: 8px;
-
-  background: var(--black);
-  color: var(--white);
-
-  font-family: var(--sans);
-  font-size: 0.95rem;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition: opacity 0.15s ease;
-}
-
-.add-btn:hover {
-  opacity: 0.85;
-}
-
-.add-btn:active {
-  opacity: 0.7;
-}
-
-.cancel-btn {
-  display: none;
-
-  width: 100%;
-  padding: 11px;
-
-  border: 1px solid var(--grey-150);
-  border-radius: 8px;
-
-  background: var(--white);
-  color: var(--grey-700);
-
-  font-family: var(--sans);
-  font-size: 0.9rem;
-  font-weight: 500;
-
-  cursor: pointer;
-}
-
-.cancel-btn.visible {
-  display: block;
-}
-
-.cancel-btn:hover {
-  border-color: var(--black);
-  color: var(--black);
-}
-
-/* Search */
-
-.search-box {
-  margin-bottom: 12px;
-}
-
-.search-box input {
-  background: var(--grey-050);
-}
-
-/* Filters */
-
-.filter-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
-
-  margin-bottom: 10px;
-}
-
-.filter-field {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.filter-field label {
-  font-size: 0.68rem;
-}
-
-.filter-field select,
-.filter-field input {
-  padding: 9px 8px;
-  font-size: 0.8rem;
-}
-
-/* Custom date range */
-
-.custom-date-range {
-  display: none;
-
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-
-  padding: 10px;
-
-  margin-bottom: 10px;
-
-  background: var(--grey-050);
-  border: 1px solid var(--grey-150);
-  border-radius: 8px;
-}
-
-.custom-date-range.visible {
-  display: grid;
-}
-
-/* Transactions */
-
-.expense-list {
-  list-style: none;
-
-  margin: 8px 0 0;
-  padding: 0;
-}
-
-.expense-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-
-  gap: 12px;
-
-  padding: 14px 0;
-
-  border-bottom: 1px solid var(--grey-100);
-}
-
-.expense-row:last-child {
-  border-bottom: none;
-}
-
-.expense-info {
-  min-width: 0;
-
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.expense-desc {
-  font-size: 0.95rem;
-  font-weight: 500;
+// ===============================
+// LEDGER V2.1
+// Setup, currency and storage
+// ===============================
 
-  color: var(--black);
+const currencyFormatter = new Intl.NumberFormat("en-IN", {
+  style: "currency",
+  currency: "INR",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+});
 
-  overflow-wrap: break-word;
+function formatCurrency(amount) {
+  return currencyFormatter.format(Number(amount) || 0);
 }
 
-.expense-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 5px;
-
-  font-size: 0.72rem;
-  color: var(--grey-500);
-}
-
-.expense-meta .dot {
-  color: var(--grey-300);
-}
-
-.expense-notes {
-  margin-top: 3px;
-
-  font-size: 0.75rem;
-  line-height: 1.4;
-
-  color: var(--grey-500);
-
-  overflow-wrap: break-word;
-}
-
-.expense-side {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-
-  flex-shrink: 0;
-}
-
-.expense-amount {
-  font-family: var(--mono);
-  font-variant-numeric: tabular-nums;
-
-  font-size: 0.92rem;
-  font-weight: 600;
-
-  color: var(--black);
-
-  white-space: nowrap;
-}
-
-.transaction-actions {
-  display: flex;
-  gap: 5px;
-}
-
-.action-btn {
-  width: 28px;
-  height: 28px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid var(--grey-150);
-  border-radius: 50%;
-
-  background: var(--white);
-  color: var(--grey-500);
-
-  cursor: pointer;
-
-  font-size: 0.75rem;
-
-  transition:
-    border-color 0.15s ease,
-    color 0.15s ease;
-}
-
-.action-btn:hover {
-  border-color: var(--black);
-  color: var(--black);
-}
-
-.delete-btn:hover {
-  border-color: var(--black);
-}
-
-/* Empty state */
+const STORAGE_KEY = "ledger.expenses";
 
-.empty-state {
-  color: var(--grey-500);
+let expenses = [];
+let editingId = null;
 
-  font-size: 0.88rem;
-  line-height: 1.5;
+// ---------- Load data ----------
 
-  padding: 16px 0 4px;
+function loadExpenses() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    expenses = saved ? JSON.parse(saved) : [];
 
-  text-align: center;
+    if (!Array.isArray(expenses)) {
+      expenses = [];
+    }
+  } catch (error) {
+    console.error("Could not load expenses:", error);
+    expenses = [];
+  }
 }
 
-/* Analytics */
+// ---------- Save data ----------
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  gap: 10px;
-
-  margin-bottom: 22px;
+function saveExpenses() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses));
 }
-
-.stat-block {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
 
-  padding: 14px;
+// ---------- Today's date ----------
 
-  background: var(--grey-050);
-  border: 1px solid var(--grey-150);
+function getTodayString() {
+  const today = new Date();
 
-  border-radius: 8px;
-}
-
-.stat-block--wide {
-  grid-column: 1 / -1;
-}
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
 
-.stat-label {
-  font-size: 0.72rem;
-  color: var(--grey-500);
+  return `${year}-${month}-${day}`;
 }
 
-.stat-value {
-  font-family: var(--mono);
-  font-variant-numeric: tabular-nums;
+loadExpenses();// ===============================
+// ADD / EDIT / DELETE
+// ===============================
 
-  font-size: 1.1rem;
-  font-weight: 600;
+function addExpense(description, amount, category, date, notes) {
+  const expense = {
+    id: Date.now(),
+    description: description.trim(),
+    amount: Number(amount),
+    category,
+    date,
+    notes: notes.trim()
+  };
 
-  color: var(--black);
+  expenses.unshift(expense);
+  saveExpenses();
 }
 
-.breakdown-title {
-  margin: 0 0 12px;
+function updateExpense(id, description, amount, category, date, notes) {
+  const index = expenses.findIndex(
+    expense => Number(expense.id) === Number(id)
+  );
 
-  font-size: 0.82rem;
-  font-weight: 600;
+  if (index === -1) return;
 
-  color: var(--grey-500);
-}
+  expenses[index] = {
+    ...expenses[index],
+    description: description.trim(),
+    amount: Number(amount),
+    category,
+    date,
+    notes: notes.trim()
+  };
 
-.category-chart {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  saveExpenses();
 }
 
-.category-row {
-  display: grid;
+function deleteExpense(id) {
+  const confirmed = confirm(
+    "Are you sure you want to delete this transaction?"
+  );
 
-  grid-template-columns: 84px 1fr 78px;
+  if (!confirmed) return;
 
-  align-items: center;
+  expenses = expenses.filter(
+    expense => Number(expense.id) !== Number(id)
+  );
 
-  gap: 10px;
-
-  font-size: 0.85rem;
-}
-
-.category-name {
-  color: var(--black);
-  font-weight: 500;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  saveExpenses();
+  renderAll();
 }
 
-.category-bar-track {
-  height: 8px;
+// ---------- Start editing ----------
 
-  background: var(--grey-100);
+function startEditing(id) {
+  const expense = expenses.find(
+    item => Number(item.id) === Number(id)
+  );
 
-  border-radius: 4px;
+  if (!expense) return;
 
-  overflow: hidden;
-}
+  editingId = id;
 
-.category-bar-fill {
-  height: 100%;
+  document.getElementById("description").value =
+    expense.description || "";
 
-  background: var(--black);
+  document.getElementById("amount").value =
+    expense.amount || "";
 
-  border-radius: 4px;
+  document.getElementById("category").value =
+    expense.category || "Other";
 
-  transition: width 0.25s ease;
-}
+  document.getElementById("transactionDate").value =
+    expense.date || getTodayString();
 
-.category-amount {
-  font-family: var(--mono);
-  font-variant-numeric: tabular-nums;
+  document.getElementById("notes").value =
+    expense.notes || "";
 
-  text-align: right;
+  document.getElementById("submitBtn").textContent =
+    "Update Transaction";
 
-  color: var(--grey-700);
-}
+  document.getElementById("cancelEditBtn").style.display =
+    "inline-block";
 
-.chart-empty {
-  color: var(--grey-500);
-  font-size: 0.85rem;
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 }
-
-/* Footer */
-
-.app-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 
-  padding: 10px 4px 0;
-}
+// ---------- Cancel editing ----------
 
-.clear-btn {
-  border: 1px solid var(--grey-150);
-  background: var(--white);
-  color: var(--grey-500);
+function cancelEditing() {
+  editingId = null;
 
-  font-family: var(--sans);
-  font-size: 0.82rem;
+  document.getElementById("expenseForm").reset();
 
-  padding: 9px 16px;
+  document.getElementById("transactionDate").value =
+    getTodayString();
 
-  border-radius: 8px;
+  document.getElementById("submitBtn").textContent =
+    "Add Transaction";
 
-  cursor: pointer;
+  document.getElementById("cancelEditBtn").style.display =
+    "none";
+  // ===============================
+// SEARCH / FILTER / SORT
+// ===============================
 
-  transition:
-    border-color 0.15s ease,
-    color 0.15s ease;
-}
+function getFilteredExpenses() {
+  const search =
+    document.getElementById("searchInput").value
+      .toLowerCase()
+      .trim();
 
-.clear-btn:hover {
-  border-color: var(--black);
-  color: var(--black);
-}
+  const category =
+    document.getElementById("filterCategory").value;
 
-.version-tag {
-  font-size: 0.72rem;
-  color: var(--grey-300);
-}
+  const dateFilter =
+    document.getElementById("dateFilter").value;
 
-/* Responsive */
+  const sort =
+    document.getElementById("sortFilter").value;
 
-@media (max-width: 420px) {
+  let result = [...expenses];
 
-  body {
-    padding: 24px 12px 48px;
+  // Search
+  if (search) {
+    result = result.filter(expense =>
+      `${expense.description} ${expense.category} ${expense.notes || ""}`
+        .toLowerCase()
+        .includes(search)
+    );
   }
 
-  .dashboard {
-    gap: 8px;
+  // Category
+  if (category !== "All") {
+    result = result.filter(
+      expense => expense.category === category
+    );
   }
 
-  .dash-card {
-    padding: 14px;
+  // Date filter
+  if (dateFilter !== "all") {
+    const today = new Date();
+    const todayString = getTodayString();
+
+    if (dateFilter === "today") {
+      result = result.filter(
+        expense => expense.date === todayString
+      );
+    }
+
+    if (dateFilter === "thisMonth") {
+      const month = today.getMonth();
+      const year = today.getFullYear();
+
+      result = result.filter(expense => {
+        const date = new Date(expense.date);
+
+        return (
+          date.getMonth() === month &&
+          date.getFullYear() === year
+        );
+      });
+    }
+
+    if (dateFilter === "lastMonth") {
+      const lastMonth = new Date(
+        today.getFullYear(),
+        today.getMonth() - 1,
+        1
+      );
+
+      result = result.filter(expense => {
+        const date = new Date(expense.date);
+
+        return (
+          date.getMonth() === lastMonth.getMonth() &&
+          date.getFullYear() === lastMonth.getFullYear()
+        );
+      });
+    }
   }
 
-  .dash-card--primary .dash-value {
-    font-size: 1.7rem;
+  // Sorting
+  if (sort === "newest") {
+    result.sort(
+      (a, b) =>
+        new Date(b.date) - new Date(a.date)
+    );
   }
 
-  .filter-grid {
-    grid-template-columns: 1fr;
+  if (sort === "oldest") {
+    result.sort(
+      (a, b) =>
+        new Date(a.date) - new Date(b.date)
+    );
   }
 
-  .custom-date-range {
-    grid-template-columns: 1fr;
+  if (sort === "highest") {
+    result.sort(
+      (a, b) => Number(b.amount) - Number(a.amount)
+    );
   }
 
-  .category-row {
-    grid-template-columns: 68px 1fr 68px;
-    gap: 8px;
+  if (sort === "lowest") {
+    result.sort(
+      (a, b) => Number(a.amount) - Number(b.amount)
+    );
   }
 
-  .expense-row {
-    gap: 8px;
+  return result;
+    }
+    }
+// ===============================
+// RENDER TRANSACTIONS
+// ===============================
+
+function renderExpenses() {
+  const list = document.getElementById("expenseList");
+  const emptyState = document.getElementById("emptyState");
+
+  const filtered = getFilteredExpenses();
+
+  list.innerHTML = "";
+
+  if (filtered.length === 0) {
+    emptyState.style.display = "block";
+    return;
   }
 
-  .expense-side {
-    flex-direction: column;
-    align-items: flex-end;
+  emptyState.style.display = "none";
+
+  filtered.forEach(expense => {
+    const item = document.createElement("div");
+
+    item.className = "expense-item";
+
+    item.innerHTML = `
+      <div>
+        <strong>${escapeHTML(expense.description)}</strong>
+        <div>${escapeHTML(expense.category)}</div>
+        <small>${expense.date || ""}</small>
+        ${
+          expense.notes
+            ? `<p>${escapeHTML(expense.notes)}</p>`
+            : ""
+        }
+      </div>
+
+      <div>
+        <strong>${formatCurrency(expense.amount)}</strong>
+
+        <button onclick="startEditing(${expense.id})">
+          Edit
+        </button>
+
+        <button onclick="deleteExpense(${expense.id})">
+          Delete
+        </button>
+      </div>
+    `;
+
+    list.appendChild(item);
+  });
+}
+
+// ---------- Security helper ----------
+
+function escapeHTML(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+// ===============================
+// ANALYTICS
+// ===============================
+
+function renderAnalytics() {
+  const total = expenses.reduce(
+    (sum, expense) => sum + Number(expense.amount || 0),
+    0
+  );
+
+  const count = expenses.length;
+
+  document.getElementById("totalValue").textContent =
+    formatCurrency(total);
+
+  document.getElementById("countValue").textContent =
+    count;
+
+  const now = new Date();
+
+  const monthlyExpenses = expenses.filter(expense => {
+    if (!expense.date) return false;
+
+    const date = new Date(expense.date);
+
+    return (
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear()
+    );
+  });
+
+  const monthTotal = monthlyExpenses.reduce(
+    (sum, expense) => sum + Number(expense.amount || 0),
+    0
+  );
+
+  document.getElementById("monthTotal").textContent =
+    formatCurrency(monthTotal);
+
+  document.getElementById("monthCount").textContent =
+    monthlyExpenses.length;
+
+  const average =
+    monthlyExpenses.length > 0
+      ? monthTotal / monthlyExpenses.length
+      : 0;
+
+  document.getElementById("monthAverage").textContent =
+    formatCurrency(average);
+
+  const largest =
+    monthlyExpenses.length > 0
+      ? Math.max(
+          ...monthlyExpenses.map(
+            expense => Number(expense.amount || 0)
+          )
+        )
+      : 0;
+
+  document.getElementById("monthLargest").textContent =
+    formatCurrency(largest);
+
+  const categoryTotals = {};
+
+  monthlyExpenses.forEach(expense => {
+    categoryTotals[expense.category] =
+      (categoryTotals[expense.category] || 0) +
+      Number(expense.amount || 0);
+  });
+
+  let topCategory = "—";
+
+  if (Object.keys(categoryTotals).length > 0) {
+    topCategory = Object.entries(categoryTotals)
+      .sort((a, b) => b[1] - a[1])[0][0];
   }
-                   }
+
+  document.getElementById("monthTopCategory").textContent =
+    topCategory;
+}
+
+// ===============================
+// FORM EVENTS
+// ===============================
+
+document
+  .getElementById("expenseForm")
+  .addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const description =
+      document.getElementById("description").value;
+
+    const amount =
+      document.getElementById("amount").value;
+
+    const category =
+      document.getElementById("category").value;
+
+    const date =
+      document.getElementById("transactionDate").value ||
+      getTodayString();
+
+    const notes =
+      document.getElementById("notes").value;
+
+    if (!description.trim() || Number(amount) <= 0) {
+      alert("Please enter a valid description and amount.");
+      return;
+    }
+
+    if (editingId !== null) {
+      updateExpense(
+        editingId,
+        description,
+        amount,
+        category,
+        date,
+        notes
+      );
+    } else {
+      addExpense(
+        description,
+        amount,
+        category,
+        date,
+        notes
+      );
+    }
+
+    cancelEditing();
+    renderAll();
+  });
+
+// Cancel edit
+document
+  .getElementById("cancelEditBtn")
+  .addEventListener("click", cancelEditing);
+
+// Search and filters
+[
+  "searchInput",
+  "filterCategory",
+  "dateFilter",
+  "sortFilter"
+].forEach(id => {
+  document
+    .getElementById(id)
+    .addEventListener("input", renderExpenses);
+
+  document
+    .getElementById(id)
+    .addEventListener("change", renderExpenses);
+});
+
+// ===============================
+// CLEAR ALL
+// ===============================
+
+document
+  .getElementById("clearBtn")
+  .addEventListener("click", function() {
+
+    if (expenses.length === 0) return;
+
+    const confirmed = confirm(
+      "Delete ALL transactions?"
+    );
+
+    if (!confirmed) return;
+
+    expenses = [];
+
+    saveExpenses();
+    renderAll();
+  });
+
+// ===============================
+// MAIN RENDER
+// ===============================
+
+function renderAll() {
+  renderExpenses();
+  renderAnalytics();
+}
+
+// Initial setup
+document.getElementById("transactionDate").value =
+  getTodayString();
+
+document.getElementById("cancelEditBtn").style.display =
+  "none";
+
+renderAll();
