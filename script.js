@@ -1,4 +1,5 @@
 // Expenses persist in localStorage under this key. Each entry: { id, description, amount, category, date }
+// Older (v1.1) entries may be missing "date" — every function below tolerates that.
 const STORAGE_KEY = 'ledger.expenses';
 
 function loadExpenses() {
@@ -29,6 +30,7 @@ const expenseList = document.getElementById('expenseList');
 const emptyState = document.getElementById('emptyState');
 const totalValue = document.getElementById('totalValue');
 const countValue = document.getElementById('countValue');
+const dashMonthValue = document.getElementById('dashMonthValue');
 const clearBtn = document.getElementById('clearBtn');
 
 const monthTotal = document.getElementById('monthTotal');
@@ -38,12 +40,22 @@ const monthLargest = document.getElementById('monthLargest');
 const monthTopCategory = document.getElementById('monthTopCategory');
 const categoryChart = document.getElementById('categoryChart');
 
+const currencyFormatter = new Intl.NumberFormat('en-IN', {
+  style: 'currency',
+  currency: 'INR',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 function formatCurrency(amount) {
-  return `$${amount.toFixed(2)}`;
+  return currencyFormatter.format(amount || 0);
 }
 
+// Returns a short display date, or a placeholder for older entries saved without one.
 function formatDate(isoString) {
+  if (!isoString) return 'No date';
   const d = new Date(isoString);
+  if (isNaN(d.getTime())) return 'No date';
   return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
@@ -60,12 +72,17 @@ function render() {
   expenses.forEach((expense) => {
     const li = document.createElement('li');
     li.className = 'expense-row';
+    const category = expense.category || 'Other';
     li.innerHTML = `
       <div class="expense-info">
         <span class="expense-desc">${expense.description}</span>
-        <span><span class="expense-cat">${expense.category}</span><span class="expense-date">${formatDate(expense.date)}</span></span>
+        <span class="expense-meta">
+          <span class="expense-category">${category}</span>
+          <span class="dot">·</span>
+          <span class="expense-date">${formatDate(expense.date)}</span>
+        </span>
       </div>
-      <div>
+      <div class="expense-side">
         <span class="expense-amount">${formatCurrency(expense.amount)}</span>
         <button class="remove-btn" data-id="${expense.id}" aria-label="Remove ${expense.description}">✕</button>
       </div>
@@ -73,7 +90,7 @@ function render() {
     expenseList.appendChild(li);
   });
 
-  const total = expenses.reduce((sum, e) => sum + e.amount, 0);
+  const total = expenses.reduce((sum, e) => sum + (e.amount || 0), 0);
   totalValue.textContent = formatCurrency(total);
   countValue.textContent = expenses.length;
 
@@ -82,25 +99,32 @@ function render() {
 
 function renderAnalytics() {
   const now = new Date();
+
+  // Entries without a valid date (older records) are excluded from "this month"
+  // math but still show up in the transaction list and lifetime total above.
   const thisMonth = expenses.filter((e) => {
+    if (!e.date) return false;
     const d = new Date(e.date);
+    if (isNaN(d.getTime())) return false;
     return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
   });
 
-  const total = thisMonth.reduce((sum, e) => sum + e.amount, 0);
+  const total = thisMonth.reduce((sum, e) => sum + (e.amount || 0), 0);
   const count = thisMonth.length;
   const average = count > 0 ? total / count : 0;
-  const largest = count > 0 ? Math.max(...thisMonth.map((e) => e.amount)) : 0;
+  const largest = count > 0 ? Math.max(...thisMonth.map((e) => e.amount || 0)) : 0;
 
   // Sum spending per category, for both the "top category" stat and the chart below.
   const categoryTotals = {};
   thisMonth.forEach((e) => {
-    categoryTotals[e.category] = (categoryTotals[e.category] || 0) + e.amount;
+    const category = e.category || 'Other';
+    categoryTotals[category] = (categoryTotals[category] || 0) + (e.amount || 0);
   });
 
   const sortedCategories = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1]);
   const topCategory = sortedCategories.length > 0 ? sortedCategories[0][0] : '—';
 
+  dashMonthValue.textContent = formatCurrency(total);
   monthTotal.textContent = formatCurrency(total);
   monthCount.textContent = count;
   monthAverage.textContent = formatCurrency(average);
