@@ -1,339 +1,93 @@
-:root {
-  --paper: #f7f5ef;
-  --ink: #23281f;
-  --ink-soft: #5b6155;
-  --rule: #cfc9b8;
-  --moss: #3f5c46;
-  --moss-dark: #2e4634;
-  --rust: #a8452f;
-  --card: #ffffff;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ledger — Expense Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-* {
-  box-sizing: border-box;
-}
+  <main class="sheet">
+    <header class="sheet-head">
+      <h1>Ledger</h1>
+      <p class="subtitle">Track what you spend, line by line.</p>
+    </header>
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: var(--paper);
-  background-image:
-    repeating-linear-gradient(
-      transparent,
-      transparent 38px,
-      var(--rule) 38px,
-      var(--rule) 39px
-    );
-  color: var(--ink);
-  font-family: 'Georgia', 'Iowan Old Style', serif;
-  display: flex;
-  justify-content: center;
-  padding: 48px 20px;
-}
+    <section class="totals" aria-live="polite">
+      <div class="total-block">
+        <span class="total-label">Total spent</span>
+        <span class="total-value" id="totalValue">$0.00</span>
+      </div>
+      <div class="total-block secondary">
+        <span class="total-label">Entries</span>
+        <span class="total-value" id="countValue">0</span>
+      </div>
+    </section>
 
-.sheet {
-  width: 100%;
-  max-width: 560px;
-  background: var(--card);
-  border: 1px solid var(--rule);
-  box-shadow: 0 2px 0 var(--rule);
-  padding: 36px 32px 28px;
-}
+    <form id="expenseForm" class="entry-form">
+      <div class="field">
+        <label for="description">Description</label>
+        <input type="text" id="description" placeholder="Coffee, rent, groceries…" required>
+      </div>
+      <div class="field field-small">
+        <label for="amount">Amount</label>
+        <input type="number" id="amount" placeholder="0.00" step="0.01" min="0.01" required>
+      </div>
+      <div class="field field-small">
+        <label for="category">Category</label>
+        <select id="category">
+          <option value="Food">Food</option>
+          <option value="Transport">Transport</option>
+          <option value="Housing">Housing</option>
+          <option value="Leisure">Leisure</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <button type="submit" class="add-btn">Add expense</button>
+    </form>
 
-.sheet-head h1 {
-  margin: 0;
-  font-size: 2.1rem;
-  font-weight: normal;
-  letter-spacing: 0.5px;
-  color: var(--moss-dark);
-}
+    <section class="ledger">
+      <ol id="expenseList" class="expense-list"></ol>
+      <p id="emptyState" class="empty-state">No expenses yet. Add your first one above.</p>
+    </section>
 
-.subtitle {
-  margin: 4px 0 0;
-  color: var(--ink-soft);
-  font-size: 0.95rem;
-  font-style: italic;
-}
+    <section class="analytics">
+      <h2 class="analytics-title">This month</h2>
 
-.totals {
-  display: flex;
-  gap: 24px;
-  margin: 28px 0;
-  padding: 18px 20px;
-  background: var(--moss-dark);
-  color: var(--paper);
-}
+      <div class="stats-grid">
+        <div class="stat-block">
+          <span class="stat-label">Spent this month</span>
+          <span class="stat-value" id="monthTotal">$0.00</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-label">Transactions</span>
+          <span class="stat-value" id="monthCount">0</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-label">Average transaction</span>
+          <span class="stat-value" id="monthAverage">$0.00</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-label">Largest expense</span>
+          <span class="stat-value" id="monthLargest">$0.00</span>
+        </div>
+        <div class="stat-block wide">
+          <span class="stat-label">Top category</span>
+          <span class="stat-value" id="monthTopCategory">—</span>
+        </div>
+      </div>
 
-.total-block {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+      <h3 class="breakdown-title">By category</h3>
+      <div id="categoryChart" class="category-chart"></div>
+    </section>
 
-.total-block.secondary {
-  border-left: 1px solid rgba(247, 245, 239, 0.25);
-  padding-left: 24px;
-}
+    <footer class="sheet-foot">
+      <button id="clearBtn" class="clear-btn" type="button">Clear all</button>
+    </footer>
+  </main>
 
-.total-label {
-  font-size: 0.75rem;
-  color: rgba(247, 245, 239, 0.7);
-}
+  <script src="script.js"></script>
+</body>
+</html>
 
-.total-value {
-  font-size: 1.6rem;
-  font-family: 'Georgia', serif;
-}
-
-.entry-form {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 10px 12px;
-  margin-bottom: 8px;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.field-small {
-  grid-column: span 1;
-}
-
-label {
-  font-size: 0.75rem;
-  color: var(--ink-soft);
-}
-
-input, select {
-  font-family: inherit;
-  font-size: 0.95rem;
-  padding: 9px 10px;
-  border: 1px solid var(--rule);
-  background: var(--paper);
-  color: var(--ink);
-}
-
-input:focus, select:focus, button:focus-visible {
-  outline: 2px solid var(--moss);
-  outline-offset: 1px;
-}
-
-.add-btn {
-  grid-column: 1 / -1;
-  margin-top: 4px;
-  padding: 11px;
-  border: none;
-  background: var(--moss);
-  color: var(--paper);
-  font-family: inherit;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: background 0.15s ease;
-}
-
-.add-btn:hover {
-  background: var(--moss-dark);
-}
-
-.ledger {
-  margin-top: 24px;
-  border-top: 1px solid var(--rule);
-  padding-top: 8px;
-}
-
-.expense-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.expense-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px dashed var(--rule);
-}
-
-.expense-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.expense-desc {
-  font-size: 0.98rem;
-}
-
-.expense-cat {
-  font-size: 0.72rem;
-  color: var(--ink-soft);
-}
-
-.expense-date {
-  font-size: 0.72rem;
-  color: var(--ink-soft);
-}
-
-.expense-cat::after {
-  content: "·";
-  margin: 0 5px;
-}
-
-.expense-amount {
-  font-size: 1rem;
-  white-space: nowrap;
-}
-
-.remove-btn {
-  border: none;
-  background: none;
-  color: var(--rust);
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 2px 6px;
-  line-height: 1;
-}
-
-.remove-btn:hover {
-  text-decoration: underline;
-}
-
-.empty-state {
-  color: var(--ink-soft);
-  font-style: italic;
-  font-size: 0.9rem;
-  padding: 16px 0;
-  text-align: center;
-}
-
-.analytics {
-  margin-top: 28px;
-  border-top: 1px solid var(--rule);
-  padding-top: 20px;
-}
-
-.analytics-title {
-  margin: 0 0 14px;
-  font-size: 1rem;
-  font-weight: normal;
-  color: var(--moss-dark);
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.stat-block {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 12px 14px;
-  background: var(--paper);
-  border: 1px solid var(--rule);
-}
-
-.stat-block.wide {
-  grid-column: 1 / -1;
-}
-
-.stat-label {
-  font-size: 0.72rem;
-  color: var(--ink-soft);
-}
-
-.stat-value {
-  font-size: 1.15rem;
-  color: var(--ink);
-}
-
-.breakdown-title {
-  margin: 0 0 10px;
-  font-size: 0.9rem;
-  font-weight: normal;
-  color: var(--ink-soft);
-}
-
-.category-chart {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.category-row {
-  display: grid;
-  grid-template-columns: 90px 1fr 64px;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.85rem;
-}
-
-.category-name {
-  color: var(--ink);
-}
-
-.category-bar-track {
-  height: 10px;
-  background: var(--rule);
-}
-
-.category-bar-fill {
-  height: 100%;
-  background: var(--moss);
-}
-
-.category-amount {
-  text-align: right;
-  color: var(--ink-soft);
-}
-
-.chart-empty {
-  color: var(--ink-soft);
-  font-style: italic;
-  font-size: 0.85rem;
-}
-
-@media (max-width: 480px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-  .category-row {
-    grid-template-columns: 76px 1fr 56px;
-  }
-}
-
-.sheet-foot {
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.clear-btn {
-  border: 1px solid var(--rule);
-  background: none;
-  color: var(--ink-soft);
-  font-family: inherit;
-  font-size: 0.82rem;
-  padding: 7px 14px;
-  cursor: pointer;
-}
-
-.clear-btn:hover {
-  border-color: var(--rust);
-  color: var(--rust);
-}
-
-@media (max-width: 480px) {
-  .entry-form {
-    grid-template-columns: 1fr 1fr;
-  }
-  .field:first-child {
-    grid-column: 1 / -1;
-  }
-}
