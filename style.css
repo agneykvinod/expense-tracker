@@ -1,0 +1,231 @@
+:root {
+  --paper: #f7f5ef;
+  --ink: #23281f;
+  --ink-soft: #5b6155;
+  --rule: #cfc9b8;
+  --moss: #3f5c46;
+  --moss-dark: #2e4634;
+  --rust: #a8452f;
+  --card: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--paper);
+  background-image:
+    repeating-linear-gradient(
+      transparent,
+      transparent 38px,
+      var(--rule) 38px,
+      var(--rule) 39px
+    );
+  color: var(--ink);
+  font-family: 'Georgia', 'Iowan Old Style', serif;
+  display: flex;
+  justify-content: center;
+  padding: 48px 20px;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 560px;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  box-shadow: 0 2px 0 var(--rule);
+  padding: 36px 32px 28px;
+}
+
+.sheet-head h1 {
+  margin: 0;
+  font-size: 2.1rem;
+  font-weight: normal;
+  letter-spacing: 0.5px;
+  color: var(--moss-dark);
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.totals {
+  display: flex;
+  gap: 24px;
+  margin: 28px 0;
+  padding: 18px 20px;
+  background: var(--moss-dark);
+  color: var(--paper);
+}
+
+.total-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.total-block.secondary {
+  border-left: 1px solid rgba(247, 245, 239, 0.25);
+  padding-left: 24px;
+}
+
+.total-label {
+  font-size: 0.75rem;
+  color: rgba(247, 245, 239, 0.7);
+}
+
+.total-value {
+  font-size: 1.6rem;
+  font-family: 'Georgia', serif;
+}
+
+.entry-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 10px 12px;
+  margin-bottom: 8px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field-small {
+  grid-column: span 1;
+}
+
+label {
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+input, select {
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 9px 10px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+input:focus, select:focus, button:focus-visible {
+  outline: 2px solid var(--moss);
+  outline-offset: 1px;
+}
+
+.add-btn {
+  grid-column: 1 / -1;
+  margin-top: 4px;
+  padding: 11px;
+  border: none;
+  background: var(--moss);
+  color: var(--paper);
+  font-family: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.add-btn:hover {
+  background: var(--moss-dark);
+}
+
+.ledger {
+  margin-top: 24px;
+  border-top: 1px solid var(--rule);
+  padding-top: 8px;
+}
+
+.expense-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.expense-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--rule);
+}
+
+.expense-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.expense-desc {
+  font-size: 0.98rem;
+}
+
+.expense-cat {
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+
+.expense-amount {
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.remove-btn {
+  border: none;
+  background: none;
+  color: var(--rust);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  line-height: 1;
+}
+
+.remove-btn:hover {
+  text-decoration: underline;
+}
+
+.empty-state {
+  color: var(--ink-soft);
+  font-style: italic;
+  font-size: 0.9rem;
+  padding: 16px 0;
+  text-align: center;
+}
+
+.sheet-foot {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.clear-btn {
+  border: 1px solid var(--rule);
+  background: none;
+  color: var(--ink-soft);
+  font-family: inherit;
+  font-size: 0.82rem;
+  padding: 7px 14px;
+  cursor: pointer;
+}
+
+.clear-btn:hover {
+  border-color: var(--rust);
+  color: var(--rust);
+}
+
+@media (max-width: 480px) {
+  .entry-form {
+    grid-template-columns: 1fr 1fr;
+  }
+  .field:first-child {
+    grid-column: 1 / -1;
+  }
+}
