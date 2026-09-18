@@ -39,7 +39,11 @@ const monthAverage = document.getElementById('monthAverage');
 const monthLargest = document.getElementById('monthLargest');
 const monthTopCategory = document.getElementById('monthTopCategory');
 const categoryChart = document.getElementById('categoryChart');
+const moneyImpact = document.getElementById('moneyImpact');
+const moneyImpactTitle = document.getElementById('moneyImpactTitle');
+const moneyImpactText = document.getElementById('moneyImpactText');
 
+let moneyImpactTimer;
 const currencyFormatter = new Intl.NumberFormat('en-IN', {
   style: 'currency',
   currency: 'INR',
@@ -152,6 +156,73 @@ function renderAnalytics() {
     categoryChart.appendChild(row);
   });
 }
+function showMoneyImpact(expense) {
+  const monthlyExpenses = expenses.filter((e) => {
+    if (!e.date) return false;
+
+    const d = new Date(e.date);
+
+    if (isNaN(d.getTime())) return false;
+
+    const now = new Date();
+
+    return (
+      d.getMonth() === now.getMonth() &&
+      d.getFullYear() === now.getFullYear()
+    );
+  });
+
+  const monthlyTotal = monthlyExpenses.reduce(
+    (sum, e) => sum + (e.amount || 0),
+    0
+  );
+
+  const categoryTotals = {};
+
+  monthlyExpenses.forEach((e) => {
+    const category = e.category || 'Other';
+
+    categoryTotals[category] =
+      (categoryTotals[category] || 0) + (e.amount || 0);
+  });
+
+  const category = expense.category || 'Other';
+
+  const categoryTotal =
+    categoryTotals[category] || 0;
+
+  const percentage =
+    monthlyTotal > 0
+      ? ((categoryTotal / monthlyTotal) * 100).toFixed(1)
+      : 0;
+
+  const largestExpense =
+    monthlyExpenses.length > 0
+      ? Math.max(...monthlyExpenses.map((e) => e.amount || 0))
+      : expense.amount;
+
+  // Special message if this is the largest expense
+  if (expense.amount >= largestExpense) {
+    moneyImpactTitle.textContent = 'New largest expense';
+
+    moneyImpactText.textContent =
+      `${formatCurrency(expense.amount)} · ${category}`;
+  } else {
+    moneyImpactTitle.textContent =
+      `${formatCurrency(expense.amount)} added`;
+
+    moneyImpactText.textContent =
+      `${category} is now ${percentage}% of your monthly spending.`;
+  }
+
+  moneyImpact.classList.add('show');
+
+  clearTimeout(moneyImpactTimer);
+
+  moneyImpactTimer = setTimeout(() => {
+    moneyImpact.classList.remove('show');
+  }, 4000);
+         }
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -164,15 +235,19 @@ form.addEventListener('submit', (event) => {
     return;
   }
 
-  expenses.push({
-    id: Date.now(),
-    description,
-    amount,
-    category,
-    date: new Date().toISOString(),
-  });
+  const newExpense = {
+  id: Date.now(),
+  description,
+  amount,
+  category,
+  date: new Date().toISOString(),
+};
 
-  form.reset();
+expenses.push(newExpense);
+
+form.reset();
+
+showMoneyImpact(newExpense);
   descriptionInput.focus();
   saveExpenses();
   render();
