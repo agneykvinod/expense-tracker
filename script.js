@@ -318,3 +318,45 @@ function updateMoneyAnalysis() {
 
 document.getElementById("incomeAmount")
   ?.addEventListener("input", updateMoneyAnalysis);
+/* =========================================
+   PAGE NAVIGATION
+========================================= */
+
+const navButtons = document.querySelectorAll(".nav-btn");
+const pages = document.querySelectorAll(".page-section");
+
+navButtons.forEach(button => {
+  button.addEventListener("click", () => {
+
+    const pageName = button.dataset.page;
+
+    // Hide all pages
+    pages.forEach(page => {
+      page.classList.add("hidden");
+    });
+
+    // Show selected page
+    const selectedPage = document.getElementById(
+      pageName === "home" ? "homePage" :
+      pageName === "income" ? "incomePage" :
+      pageName === "insights" ? "insightsPage" :
+      pageName === "ai" ? "aiPage" : ""
+    );
+
+    if (selectedPage) {
+      selectedPage.classList.remove("hidden");
+    }
+
+    // Update active button
+    navButtons.forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    // Refresh financial analysis
+    if (pageName === "income") {
+      updateMoneyAnalysis();
+    }
+  });
+});
