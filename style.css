@@ -549,3 +549,6 @@ button:focus-visible {
   background: rgba(255,255,255,.05);
   line-height: 1.5;
 }
+.hidden {
+    display: none !important;
+}
