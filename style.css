@@ -435,3 +435,66 @@ button:focus-visible {
     font-size: 1.7rem;
   }
 }
+/* ==========================================
+   MONEY IMPACT
+   ========================================== */
+
+.money-impact {
+  position: fixed;
+
+  left: 50%;
+  bottom: 24px;
+
+  width: calc(100% - 32px);
+  max-width: 440px;
+
+  padding: 15px 16px;
+
+  background: var(--black);
+  color: var(--white);
+
+  border-radius: 10px;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  z-index: 1000;
+
+  opacity: 0;
+  transform: translate(-50%, 20px);
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.money-impact.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.money-impact-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+
+  letter-spacing: 0.1em;
+
+  color: var(--grey-300);
+}
+
+.money-impact strong {
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.money-impact > span:last-child {
+  font-size: 0.76rem;
+  line-height: 1.4;
+
+  color: var(--grey-300);
+}
