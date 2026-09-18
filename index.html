@@ -119,6 +119,110 @@
   </a>
 
     </section>
+    <section id="incomePage" class="page-section" hidden>
+      <div class="money-analysis" id="moneyAnalysis">
+
+  <span class="analysis-label">LEDGER INTELLIGENCE</span>
+
+  <h3>Income vs Spending</h3>
+
+  <div class="analysis-numbers">
+    <div>
+      <small>Income</small>
+      <strong id="analysisIncome">₹0</strong>
+    </div>
+
+    <div>
+      <small>Expenses</small>
+      <strong id="analysisExpense">₹0</strong>
+    </div>
+
+    <div>
+      <small>Available</small>
+      <strong id="analysisAvailable">₹0</strong>
+    </div>
+  </div>
+
+  <div class="analysis-result" id="analysisResult">
+    Add your income and expenses to see your financial position.
+  </div>
+
+      </div>
+
+  <header class="page-header">
+    <span class="page-label">LEDGER INCOME</span>
+    <h2>Track what comes in.</h2>
+    <p>Keep your income organized and see what you have available.</p>
+  </header>
+
+  <div class="income-total-card">
+    <span>Total income</span>
+    <strong id="incomeTotal">₹0.00</strong>
+  </div>
+
+  <form id="incomeForm" class="income-form">
+
+    <div class="field">
+      <label for="incomeSource">Income source</label>
+      <input
+        type="text"
+        id="incomeSource"
+        placeholder="Salary, freelance, business…"
+        required
+      >
+    </div>
+
+    <div class="field">
+      <label for="incomeAmount">Amount (INR)</label>
+      <div class="amount-input">
+        <span class="currency-prefix">₹</span>
+        <input
+          type="number"
+          id="incomeAmount"
+          placeholder="0.00"
+          step="0.01"
+          min="0.01"
+          required
+        >
+      </div>
+    </div>
+
+    <button type="submit" class="add-btn">
+      Add income
+    </button>
+
+  </form>
+
+  <div class="income-list-section">
+    <h3 class="breakdown-title">Income sources</h3>
+    <div id="incomeList" class="income-list"></div>
+  </div>
+
+    </section>
+    <nav class="bottom-nav" aria-label="Main navigation">
+
+  <button class="nav-btn active" data-page="home">
+    <span>⌂</span>
+    <small>Home</small>
+  </button>
+
+  <button class="nav-btn" data-page="income">
+    <span>₹</span>
+    <small>Income</small>
+  </button>
+
+  <button class="nav-btn" data-page="insights">
+    <span>◈</span>
+    <small>Insights</small>
+  </button>
+
+  <button class="nav-btn" data-page="ai">
+    <span>✦</span>
+    <small>AI</small>
+  </button>
+
+      </nav>
+      
     <footer class="app-footer">
       <button id="clearBtn" class="clear-btn" type="button">Clear all</button>
       <span class="version-tag">Ledger 2.0</span>
@@ -129,5 +233,6 @@
   <script src="script.js"></script>
 </body>
 </html>
+      
 
         
