@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Ledger AI</title>
+
+  <link rel="stylesheet" href="ai.css">
+</head>
+
+<body>
+
+  <div class="ai-app">
+
+    <!-- Header -->
+    <header class="ai-header">
+
+      <div>
+        <p class="ai-wordmark">Ledger</p>
+        <h1>Ledger AI</h1>
+      </div>
+
+      <a href="index.html" class="back-btn">
+        ← Ledger
+      </a>
+
+    </header>
+
+
+    <!-- Introduction -->
+    <section class="ai-intro">
+
+      <div class="ai-icon">
+        ✦
+      </div>
+
+      <h2>Ask about your money.</h2>
+
+      <p>
+        I can analyse your expenses, spending patterns and savings
+        using the data stored in your Ledger.
+      </p>
+
+    </section>
+
+
+    <!-- Quick Questions -->
+    <section class="quick-section">
+
+      <p class="quick-label">Try asking</p>
+
+      <div class="quick-buttons">
+
+        <button class="quick-btn" data-question="How much have I spent this month?">
+          How much did I spend?
+        </button>
+
+        <button class="quick-btn" data-question="What is my biggest spending category?">
+          Where do I spend the most?
+        </button>
+
+        <button class="quick-btn" data-question="How can I save money?">
+          How can I save?
+        </button>
+
+        <button class="quick-btn" data-question="Show me my biggest expenses.">
+          Show my biggest expenses
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- Chat -->
+    <main class="chat-container">
+
+      <div
+        id="chatMessages"
+        class="chat-messages"
+        aria-live="polite"
+      >
+
+        <!-- Initial assistant message -->
+        <div class="message assistant-message">
+
+          <div class="message-label">
+            Ledger AI
+          </div>
+
+          <div class="message-bubble">
+            Hello. I'm your Ledger AI assistant.
+            Ask me anything about your expenses or spending.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Input -->
+      <form id="chatForm" class="chat-input-area">
+
+        <input
+          type="text"
+          id="chatInput"
+          placeholder="Ask about your expenses..."
+          autocomplete="off"
+          required
+        >
+
+        <button
+          type="submit"
+          class="send-btn"
+          aria-label="Send message"
+        >
+          ↑
+        </button>
+
+      </form>
+
+    </main>
+
+
+    <!-- Disclaimer -->
+    <footer class="ai-footer">
+
+      <span>
+        Ledger AI uses your locally stored expense data.
+      </span>
+
+    </footer>
+
+  </div>
+
+
+  <script src="ai.js"></script>
+
+</body>
+  </html>
