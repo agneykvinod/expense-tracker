@@ -283,18 +283,18 @@ function updateMoneyAnalysis() {
 
   const income = parseFloat(incomeInput?.value) || 0;
 
-  const expenses = transactions.reduce(
+  const expenses = expenses.reduce(
     (total, item) => total + Number(item.amount || 0),
     0
   );
 
-  const available = income - expenses;
+  const available = income - totalExpenses;
 
   document.getElementById("analysisIncome").textContent =
     `₹${income.toFixed(2)}`;
 
   document.getElementById("analysisExpense").textContent =
-    `₹${expenses.toFixed(2)}`;
+    `₹${totalExpenses.toFixed(2)}`;
 
   document.getElementById("analysisAvailable").textContent =
     `₹${available.toFixed(2)}`;
@@ -307,7 +307,7 @@ function updateMoneyAnalysis() {
   } else if (available < 0) {
     result.textContent =
       "⚠️ Your spending is higher than your recorded income. Review your expenses.";
-  } else if (expenses / income >= 0.8) {
+  } else if (totalExpenses / income >= 0.8) {
     result.textContent =
       "👀 Most of your income is being spent. There may be room to optimise.";
   } else {
