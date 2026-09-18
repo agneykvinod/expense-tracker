@@ -277,13 +277,13 @@ render();
    INCOME vs SPENDING INTELLIGENCE
 ================================= */
 
-function updateMoneyAnalysis() {
+
+      function updateMoneyAnalysis() {
 
   const incomeInput = document.getElementById("incomeAmount");
-
   const income = parseFloat(incomeInput?.value) || 0;
 
-  const expenses = expenses.reduce(
+  const totalExpenses = expenses.reduce(
     (total, item) => total + Number(item.amount || 0),
     0
   );
@@ -302,18 +302,27 @@ function updateMoneyAnalysis() {
   const result = document.getElementById("analysisResult");
 
   if (income === 0) {
+
     result.textContent =
       "Add your income and expenses to see your financial position.";
+
   } else if (available < 0) {
+
     result.textContent =
-      "⚠️ Your spending is higher than your recorded income. Review your expenses.";
+      "⚠ Your spending is higher than your recorded income. Review your expenses.";
+
   } else if (totalExpenses / income >= 0.8) {
+
     result.textContent =
-      "👀 Most of your income is being spent. There may be room to optimise.";
+      "⚠ Most of your income is being spent. There may be room to optimise.";
+
   } else {
+
     result.textContent =
-      "✓ You have a positive surplus. This amount can become the basis for your savings and investment plan.";
+      "✓ You have a positive surplus. This can become the basis for your savings and investment plan.";
+
   }
+      }
 }
 
 document.getElementById("incomeAmount")
