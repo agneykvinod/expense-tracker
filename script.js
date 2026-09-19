@@ -273,59 +273,129 @@ clearBtn.addEventListener('click', () => {
 });
 
 render();
+
 /* =================================
-   INCOME vs SPENDING INTELLIGENCE
+   INCOME + INCOME vs SPENDING
 ================================= */
 
+// Income persists in localStorage under its own key. Each entry: { id, source, amount, date }
+const INCOME_KEY = 'ledger.income';
 
-      function updateMoneyAnalysis() {
+function loadIncome() {
+  try {
+    const raw = localStorage.getItem(INCOME_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (err) {
+    console.error('Could not read saved income:', err);
+    return [];
+  }
+}
 
-  const incomeInput = document.getElementById("incomeAmount");
-  const income = parseFloat(incomeInput?.value) || 0;
+function saveIncome() {
+  try {
+    localStorage.setItem(INCOME_KEY, JSON.stringify(incomeEntries));
+  } catch (err) {
+    console.error('Could not save income:', err);
+  }
+}
 
-  const totalExpenses = expenses.reduce(
-    (total, item) => total + Number(item.amount || 0),
-    0
-  );
+let incomeEntries = loadIncome();
 
+const incomeForm = document.getElementById('incomeForm');
+const incomeSourceInput = document.getElementById('incomeSource');
+const incomeAmountInput = document.getElementById('incomeAmount');
+const incomeTotalEl = document.getElementById('incomeTotal');
+const incomeListEl = document.getElementById('incomeList');
+
+function renderIncome() {
+  incomeListEl.innerHTML = '';
+
+  if (incomeEntries.length === 0) {
+    incomeListEl.innerHTML = '<p class="chart-empty">No income added yet.</p>';
+  }
+
+  incomeEntries.forEach((entry) => {
+    const row = document.createElement('div');
+    row.className = 'expense-row';
+    row.innerHTML = `
+      <div class="expense-info">
+        <span class="expense-desc"></span>
+        <span class="expense-meta">${formatDate(entry.date)}</span>
+      </div>
+      <div class="expense-side">
+        <span class="expense-amount">${formatCurrency(entry.amount)}</span>
+        <button class="remove-btn" type="button" data-id="${entry.id}">✕</button>
+      </div>
+    `;
+    // textContent (not innerHTML) so a typed source name can never run as HTML.
+    row.querySelector('.expense-desc').textContent = entry.source;
+    row.querySelector('.remove-btn').setAttribute('aria-label', 'Remove ' + entry.source);
+    incomeListEl.appendChild(row);
+  });
+
+  const totalIncome = incomeEntries.reduce((sum, e) => sum + (e.amount || 0), 0);
+  incomeTotalEl.textContent = formatCurrency(totalIncome);
+}
+
+function updateMoneyAnalysis() {
+  const income = incomeEntries.reduce((sum, e) => sum + Number(e.amount || 0), 0);
+  const totalExpenses = expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
   const available = income - totalExpenses;
 
-  document.getElementById("analysisIncome").textContent =
-    `₹${income.toFixed(2)}`;
+  document.getElementById('analysisIncome').textContent = formatCurrency(income);
+  document.getElementById('analysisExpense').textContent = formatCurrency(totalExpenses);
+  document.getElementById('analysisAvailable').textContent = formatCurrency(available);
 
-  document.getElementById("analysisExpense").textContent =
-    `₹${totalExpenses.toFixed(2)}`;
-
-  document.getElementById("analysisAvailable").textContent =
-    `₹${available.toFixed(2)}`;
-
-  const result = document.getElementById("analysisResult");
+  const result = document.getElementById('analysisResult');
 
   if (income === 0) {
-
-    result.textContent =
-      "Add your income and expenses to see your financial position.";
-
+    result.textContent = 'Add your income and expenses to see your financial position.';
   } else if (available < 0) {
-
-    result.textContent =
-      "⚠ Your spending is higher than your recorded income. Review your expenses.";
-
+    result.textContent = '⚠ Your spending is higher than your recorded income. Review your expenses.';
   } else if (totalExpenses / income >= 0.8) {
-
-    result.textContent =
-      "⚠ Most of your income is being spent. There may be room to optimise.";
-
+    result.textContent = '⚠ Most of your income is being spent. There may be room to optimise.';
   } else {
-
-    result.textContent =
-      "✓ You have a positive surplus. This can become the basis for your savings and investment plan.";
-
+    result.textContent = '✓ You have a positive surplus. This can become the basis for your savings and investment plan.';
   }
-      }
+}
 
-document.getElementById("incomeAmount")
-  ?.addEventListener("input", updateMoneyAnalysis);
+incomeForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const source = incomeSourceInput.value.trim();
+  const amount = parseFloat(incomeAmountInput.value);
+
+  if (!source || isNaN(amount) || amount <= 0) {
+    return;
+  }
+
+  incomeEntries.push({
+    id: Date.now(),
+    source,
+    amount,
+    date: new Date().toISOString(),
+  });
+
+  incomeForm.reset();
+  saveIncome();
+  renderIncome();
+  updateMoneyAnalysis();
+  incomeSourceInput.focus();
+});
+
+incomeListEl.addEventListener('click', (event) => {
+  const button = event.target.closest('.remove-btn');
+  if (!button) return;
+
+  const id = Number(button.dataset.id);
+  incomeEntries = incomeEntries.filter((e) => e.id !== id);
+  saveIncome();
+  renderIncome();
+  updateMoneyAnalysis();
+});
+
+renderIncome();
+updateMoneyAnalysis();
 /* =========================================
    PAGE NAVIGATION
 ========================================= */
@@ -359,7 +429,6 @@ navButtons.forEach(button => {
     navButtons.forEach(btn => {
       btn.classList.remove("active");
     });
-
     button.classList.add("active");
 
     // Refresh financial analysis
