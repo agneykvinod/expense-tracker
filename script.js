@@ -403,6 +403,49 @@ updateMoneyAnalysis();
 const navButtons = document.querySelectorAll(".nav-btn");
 const pages = document.querySelectorAll(".page-section");
 
+// Which section each nav button shows (data-page value -> element id).
+// "ai" is deliberately not listed: it opens the separate ai.html page instead.
+// Add  insights: "insightsPage"  here once an Insights section exists.
+const PAGE_IDS = {
+  home: "homePage",
+  income: "incomePage",
+};
+
+navButtons.forEach(button => {
+  button.addEventListener("click", () => {
+
+    const pageName = button.dataset.page;
+
+    // AI is its own page.
+    if (pageName === "ai") {
+      window.location.href = "ai.html";
+      return;
+    }
+
+    // Only switch if the target section really exists, so the current
+    // page is never hidden without something to show in its place.
+    const selectedPage = document.getElementById(PAGE_IDS[pageName]);
+    if (!selectedPage) return;
+
+    pages.forEach(page => page.classList.add("hidden"));
+    selectedPage.classList.remove("hidden");
+
+    navButtons.forEach(btn => btn.classList.remove("active"));
+    button.classList.add("active");
+
+    // Refresh financial analysis
+    if (pageName === "income") {
+      updateMoneyAnalysis();
+    }
+  });
+});
+
+   PAGE NAVIGATION
+========================================= */
+
+const navButtons = document.querySelectorAll(".nav-btn");
+const pages = document.querySelectorAll(".page-section");
+
 navButtons.forEach(button => {
   button.addEventListener("click", () => {
 
