@@ -348,7 +348,7 @@ navButtons.forEach(button => {
       pageName === "home" ? "homePage" :
       pageName === "income" ? "incomepage" :
       pageName === "insights" ? "insightsPage" :
-      pageName === "ai" ? "aiPage" : ""
+      pageName === "ai.html" ? "aiPage" : ""
     );
 
     if (selectedPage) {
