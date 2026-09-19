@@ -346,7 +346,7 @@ navButtons.forEach(button => {
     // Show selected page
     const selectedPage = document.getElementById(
       pageName === "home" ? "homePage" :
-      pageName === "income" ? "incomePage" :
+      pageName === "income" ? "incomepage" :
       pageName === "insights" ? "insightsPage" :
       pageName === "ai" ? "aiPage" : ""
     );
