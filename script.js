@@ -323,7 +323,6 @@ render();
 
   }
       }
-}
 
 document.getElementById("incomeAmount")
   ?.addEventListener("input", updateMoneyAnalysis);
